@@ -1,3 +1,6 @@
+import { v4 as uuid } from "uuid";
+import trim from "lodash/trim";
+import isEmpty from "lodash/isEmpty";
 export const regexTest = (trollBoxMessage) => {
   let m;
   var positionSize;
@@ -30,5 +33,12 @@ export const regexTest = (trollBoxMessage) => {
     });
   }
 
-  return [positionSize, entryPrice];
+  if (!isEmpty(positionSize)) {
+    return {
+      id: uuid(),
+      user: trollBoxMessage[1],
+      position: positionSize,
+      entry: entryPrice,
+    };
+  } else return {};
 };

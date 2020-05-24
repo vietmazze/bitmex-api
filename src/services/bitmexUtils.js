@@ -1,12 +1,12 @@
-import reduce from "lodash/reduce";
+//import reduce from "lodash/reduce";
 import flatMap from "lodash/flatMap";
 import omit from "lodash/omit";
 import includes from "lodash/includes";
-import remove from "lodash/remove";
-import trim from "lodash/trim";
-import { isCompositeComponent } from "react-dom/test-utils";
+//import remove from "lodash/remove";
+//import trim from "lodash/trim";
+//import { isCompositeComponent } from "react-dom/test-utils";
 
-import regexTest from "./bitmexRegex";
+import { regexTest } from "./bitmexRegex";
 
 // Specific tables for authenticated api
 export const noSymbolTables = [
@@ -27,17 +27,14 @@ export const noSymbolTables = [
 export const transformData = (message) => {
   const { table, action, data } = message;
 
-  //Html: /position xbtm20 <pre><code><img class="emoji" src="/assets/img/emoji/bitmex.png?v=1" /> XBTM20: -150,000 Cont @ 9489.4667 </code></pre>
   //Message: /position xbtusd im done trading for the day :) ``` :bitmex: XBTUSD: 40,001 Cont @ 9698.3804 ```
   //Message: /position xbtm20 ``` :bitmex: XBTM20: -150,000 Cont @ 9489.4667 ```
-  //User:Yurlo
   // {trade.map((item) => item.map((value) => Object.keys(value)))}:
-
-  //:bitmex: XBTM20: -150,000 Cont @ 9489.4667
+  // "/position xbtusd 롱 살려주세요 다신 롱 안치겟습니다↵```↵:bitmex: XBTUSD: 2,000 Cont @ 9497.5781↵```"
+  //{message: "/position xbtusd↵```↵:bitmex: XBTUSD: 9,500 Cont @ 9493.0701↵```", user: "Yurlo"}
+  ///position xbtusd 7800간다고,Tytyrr
   var trollBoxMessage = [];
   var transferData = [];
-  var finishedData = [];
-  var count = 0;
 
   flatMap(data, (item) =>
     transferData.push(
@@ -45,13 +42,14 @@ export const transformData = (message) => {
     )
   );
 
-  for (var item of transferData) {
-    if (includes(item.message, "/position")) {
-      trollBoxMessage.push(item.message);
-    }
+  if (includes(transferData[0].message, "/position")) {
+    trollBoxMessage.push(transferData[0].message, transferData[0].user);
+    console.log("NEW ENTRY AFTER PUSH IN" + trollBoxMessage);
   }
-
-  finishedData.push(regexTest(trollBoxMessage));
-  console.log(finishedData);
-  return trollBoxMessage;
+  console.log(
+    "message: " + transferData[0].message,
+    "user: " + transferData[0].user
+  );
+  return regexTest(trollBoxMessage);
+  //return transferData;
 };

@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { open, close, selectors, actions, success } from "./websocketSlice";
+import { open, close, selectors } from "./websocketSlice";
 import socket from "../../services/bitmex";
 import styles from "../counter/Counter.module.css";
 export function Websocket() {
   const dispatch = useDispatch();
   const isOpen = useSelector(selectors.isOpen);
   const isLog = useSelector(selectors.log);
-  const trade = useSelector(selectors.trade);
+
   React.useEffect(() => {
     socket.open();
 

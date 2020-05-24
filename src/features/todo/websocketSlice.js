@@ -1,12 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import socket from "../../services/bitmex";
 import { call } from "../../services/bitmex";
+
 const websocket = createSlice({
   name: "websocket",
   initialState: {
     isOpen: false,
     log: "",
-    trade: [["/position bitmext: 4000 @ count"], ["/position 2 bitmex"]],
+    trade: [
+      { id: 1, user: "lee", position: "15000", entry: "9700" },
+      { id: 2, user: "cartel", position: "15000", entry: "9700" },
+    ],
   },
 
   reducers: {
@@ -24,10 +27,8 @@ const websocket = createSlice({
 
     success: (state, action) => {
       const { payload } = action;
-
-      if (payload != null) {
-        state.trade.push(payload);
-      }
+      console.log("payload" + payload);
+      state.trade.push(payload);
 
       if (state.trade.length > 100) {
         state.trade.splice(5, 10);
@@ -42,6 +43,8 @@ export const actions = {
       op: "subscribe",
       args: "chat",
     }).then((result) => {
+      console.log("Resolved successfully, new data to Redux");
+      console.log(result);
       dispatch(websocket.actions.success(result));
     }),
 };

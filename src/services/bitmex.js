@@ -10,12 +10,11 @@ const socket = new ReconnectingWebsocket(endpoints.production, null, {
   automaticOpen: false,
 });
 
-const subscriptions = {};
-
 socket.addEventListener("message", (event) => {
   const e = new CustomEvent("json");
   e.data = JSON.parse(event.data);
-  if (!e.data.data) return;
+
+  if (isEmpty(e.data.data)) return;
   e.data = transformData(e.data);
 
   socket.dispatchEvent(e);
@@ -32,11 +31,12 @@ export const call = (request, { timeout = 10000 } = {}) =>
     });
 
     function callback(event) {
-      const message = event.data;
       // if message is empty, dont promise resolve
-      if (isEmpty(message)) return;
 
-      resolve(message);
+      //socket.removeEventListener("message", callback);
+      if (isEmpty(event.data)) return;
+
+      return resolve(event.data);
     }
 
     // If connection is open send, otherwise wait for connection to open;
