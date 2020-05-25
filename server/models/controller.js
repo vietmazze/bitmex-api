@@ -1,4 +1,5 @@
 const key = require("../config/keys");
+const fetchBitmex = require("../../worker/fetchBitmex");
 const Pool = require("pg").Pool;
 const pool = new Pool({
   user: key.user,
@@ -22,12 +23,14 @@ const getLeader = () => {
   });
 };
 
-const createLeader = (body) => {
+const createLeader = async (body) => {
+  var data = await fetchBitmex.getAPI();
+  //console.log(data);
   return new Promise(function (resolve, reject) {
     const { name, total_profit } = body;
     pool.query(
       "INSERT INTO leaderboard (name, predicted_side,total_profit,profit_24h,profit_7d) VALUES ($1,$2,$3,$4,$5) RETURNING *",
-      [name, "Short", total_profit, "0.12", "1.99"],
+      [name, "Short", total_profit, "0.98", "254"],
       (err, res) => {
         if (err) {
           reject(err);

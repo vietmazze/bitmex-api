@@ -11,6 +11,7 @@
     "lodash": "^4.17.15",
     "log4js": "^6.2.1",
     "logrocket": "^1.0.7",
+    "node-fetch": "^2.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-json-component": "^1.0.0",
