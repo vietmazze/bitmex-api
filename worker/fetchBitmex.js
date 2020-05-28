@@ -1,11 +1,11 @@
 const fetch = require("node-fetch");
 
-const url = "https://testnet.bitmex.com/api/v1/leaderboard?method=ROE";
-
 var data = [];
-const getAPI = async (url) => {
+const getAPI = async () => {
   try {
-    const response = await fetch(url);
+    const response = await fetch(
+      "https://testnet.bitmex.com/api/v1/leaderboard?method=ROE"
+    );
     json = await response.json();
     json.map(async (item) => await fixing(item));
     return data;

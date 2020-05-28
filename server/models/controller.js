@@ -25,17 +25,21 @@ const getLeader = () => {
 
 const createLeader = async (body) => {
   var data = await fetchBitmex.getAPI();
-  //console.log(data);
+  var username = data.map((p) => p.name);
+  var total_profit = data.map((p) => `'${p.total_profit}'`);
+  var profit_7d = data.map((p) => `'${p.profit_7d}'`);
+  var profit_24h = data.map((p) => `'${p.profit_24h}'`);
   return new Promise(function (resolve, reject) {
-    const { name, total_profit } = body;
     pool.query(
-      "INSERT INTO leaderboard (name, predicted_side,total_profit,profit_24h,profit_7d) VALUES ($1,$2,$3,$4,$5) RETURNING *",
-      [name, "Short", total_profit, "0.98", "254"],
+      "INSERT INTO leaderboard (name) SELECT * FROM UNNEST(ARRAY[$1])",
+      [username],
+      // UNNEST(ARRAY[$2]), UNNEST(ARRAY[$3])::text, UNNEST(ARRAY[$4])::text, UNNEST(ARRAY[$5])::varchar()
+      //, predicted_side,total_profit,profit_24h,profit_7d
       (err, res) => {
         if (err) {
           reject(err);
         }
-        resolve(`A new leader has been added: ${res.rows[0]}`);
+        resolve(username);
       }
     );
   });
