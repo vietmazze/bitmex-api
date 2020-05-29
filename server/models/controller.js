@@ -25,22 +25,28 @@ const getLeader = () => {
 
 const createLeader = async (body) => {
   var data = await fetchBitmex.getAPI();
-  var username = data.map((p) => p.name);
-  var total_profit = data.map((p) => `'${p.total_profit}'`);
-  var profit_7d = data.map((p) => `'${p.profit_7d}'`);
-  var profit_24h = data.map((p) => `'${p.profit_24h}'`);
+
   return new Promise(function (resolve, reject) {
-    pool.query(
-      "INSERT INTO leaderboard (name) SELECT * FROM UNNEST(ARRAY[$1])",
-      [username],
-      // UNNEST(ARRAY[$2]), UNNEST(ARRAY[$3])::text, UNNEST(ARRAY[$4])::text, UNNEST(ARRAY[$5])::varchar()
-      //, predicted_side,total_profit,profit_24h,profit_7d
-      (err, res) => {
-        if (err) {
-          reject(err);
+    data.map((item) =>
+      pool.query(
+        "INSERT INTO leaderboard (name,predicted_side,total_profit,profit_24h,profit_7d) VALUES ($1,$2,$3,$4,$5) RETURNING name;",
+        [
+          item.name,
+          item.predicted_side,
+          item.total_profit,
+          item.profit_24h,
+          item.profit_7d,
+        ],
+
+        // UNNEST(ARRAY[$2]), UNNEST(ARRAY[$3])::text, UNNEST(ARRAY[$4])::text, UNNEST(ARRAY[$5])::varchar()
+        //, predicted_side,total_profit,profit_24h,profit_7d
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows[0]);
         }
-        resolve(username);
-      }
+      )
     );
   });
 };

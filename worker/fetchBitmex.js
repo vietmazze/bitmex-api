@@ -32,4 +32,21 @@ const fixing = (item) => {
   }
 };
 
+const positionCal = (prevProfit, currProfit, prevPrice, currPrice) => {
+  try {
+    if (currProfit > prevProfit) {
+      if (currPrice > prevPrice) {
+      } else if (currPrice < prevPrice) {
+      } else {
+      }
+    } else if (currProfit < prevProfit) {
+      if (currPrice > prevPrice) {
+      } else if (currPrice < prevPrice) {
+      } else {
+      }
+    } else {
+    }
+  } catch (error) {}
+};
+
 module.exports = { getAPI };

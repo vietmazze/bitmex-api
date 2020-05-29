@@ -15,6 +15,7 @@ socket.addEventListener("message", (event) => {
   e.data = JSON.parse(event.data);
 
   if (isEmpty(e.data.data)) return;
+
   e.data = transformData(e.data);
 
   socket.dispatchEvent(e);

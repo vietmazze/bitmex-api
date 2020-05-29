@@ -35,21 +35,47 @@ export const transformData = (message) => {
   ///position xbtusd 7800간다고,Tytyrr
   var trollBoxMessage = [];
   var transferData = [];
-
-  flatMap(data, (item) =>
-    transferData.push(
-      omit(item, ["fromBot", "id", "channelID", "html", "date"])
-    )
-  );
-
-  if (includes(transferData[0].message, "/position")) {
-    trollBoxMessage.push(transferData[0].message, transferData[0].user);
-    console.log("NEW ENTRY AFTER PUSH IN" + trollBoxMessage);
+  var tradeBin1m = [];
+  // table: "tradeBin1m"
+  // Unsure what data we want to use.
+  if (table == "tradeBin1m") {
+    console.log(message);
+    flatMap(data, (item) =>
+      tradeBin1m.push(
+        omit(item, [
+          "timestamp",
+          "symbol",
+          "high",
+          "low",
+          "homeNotional",
+          "volume",
+          "vwap",
+          "foreignNotional",
+          "open",
+          "trades",
+          "turnover",
+        ])
+      )
+    );
+    console.log("TradeBin1Min Open : " + tradeBin1m[0].close);
   }
-  console.log(
-    "message: " + transferData[0].message,
-    "user: " + transferData[0].user
-  );
+
+  if (table == "chat") {
+    flatMap(data, (item) =>
+      transferData.push(
+        omit(item, ["fromBot", "id", "channelID", "html", "date"])
+      )
+    );
+
+    if (includes(transferData[0].message, "/position")) {
+      trollBoxMessage.push(transferData[0].message, transferData[0].user);
+      console.log("NEW ENTRY AFTER PUSH IN" + trollBoxMessage);
+    }
+    console.log(
+      "message: " + transferData[0].message,
+      "user: " + transferData[0].user
+    );
+  }
   return regexTest(trollBoxMessage);
   //return transferData;
 };

@@ -10,7 +10,7 @@ function App() {
   const trade = useSelector(selectors.trade);
   React.useEffect(() => {
     dispatch(actions.request());
-  });
+  }, [dispatch]);
 
   return (
     <div className="App">

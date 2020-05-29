@@ -41,7 +41,7 @@ export const actions = {
   request: () => (dispatch) =>
     call({
       op: "subscribe",
-      args: "chat",
+      args: ["chat", "tradeBin1m:XBTUSD"],
     }).then((result) => {
       console.log("Resolved successfully, new data to Redux");
       console.log(result);
