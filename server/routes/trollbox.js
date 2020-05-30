@@ -1,25 +1,25 @@
 const express = require("express");
 const router = express.Router();
 
-const leaderboard_model = require("../models/leaderboardControl");
+const trollbox_model = require("../models/trollboxControl");
 
-// @route   GET api/leaderboard
-// @desc    GET all leaderboard users
+// @route   GET api/trollb
+// @desc    GET all trollbox users
 router.get("/", (req, res) => {
-  leaderboard_model
-    .getLeader()
+  trollbox_model
+    .getTrollbox()
     .then((response) => {
-      res.status(200).send(response);
+      res.status(200).send("WORK");
     })
     .catch((error) => {
-      res.status(500).send(error);
+      res.status(500).send("NOT WORK");
     });
 });
 
-// @route   POST api/leaderboard/
+// @route   POST api/trollbox/
 router.post("/", (req, res) => {
-  leaderboard_model
-    .createLeader(req.body)
+  trollbox_model
+    .createTrollbox(req.body)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -29,8 +29,8 @@ router.post("/", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-  leaderboard_model
-    .deleteLeader(req.params.id)
+  trollbox_model
+    .deleteTrollbox(req.params.id)
     .then((response) => {
       res.status(200).send(response);
     })

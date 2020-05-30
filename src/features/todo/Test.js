@@ -4,7 +4,7 @@ import { selectors } from "./websocketSlice";
 
 export const Test = ({}) => {
   const dispatch = useDispatch();
-
+  const leaderboard = useSelector(selectors.leaderboard);
   const trade = useSelector(selectors.trade);
 
   return (

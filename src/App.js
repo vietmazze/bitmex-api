@@ -10,6 +10,9 @@ function App() {
   const trade = useSelector(selectors.trade);
   React.useEffect(() => {
     dispatch(actions.request());
+  });
+  React.useEffect(() => {
+    dispatch(actions.fetchLeaderboard());
   }, [dispatch]);
 
   return (
